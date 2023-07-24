@@ -5,7 +5,7 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from .permissions import IsReadOnly
 from .serializers import *
-from rest_framework import viewsets
+from rest_framework import viewsets, status
 from rest_framework.authtoken.views import ObtainAuthToken
 from rest_framework.authtoken.models import Token
 
@@ -53,18 +53,10 @@ class MeetingRoomViewSet(viewsets.ReadOnlyModelViewSet):
 
 class ReservationListAPIView(ListCreateAPIView):
     queryset = Reservation.objects.all()
-    serializer_class = ReservationCreateSerializer
-    #permission_classes = [IsAuthenticated]
+    serializer_class = ReservationForUserSerializer
     permission_classes = [IsAuthenticated]
     authentication_classes = [TokenAuthentication]
 
-    def perform_create(self, serializer):
-        user = self.request.user
-        try:
-            employee = Employee.objects.get(user=user)
-        except Employee.DoesNotExist:
-            employee = Employee.objects.create(user=user, first_name=user.first_name, last_name=user.last_name)
-        serializer.save(reserved_by=employee)
 
     def post(self, request, format=None):
         # Получение объекта Employee на основе пользователя, связанного с токеном авторизации
@@ -86,7 +78,6 @@ class ReservationDetailAPIView(RetrieveUpdateDestroyAPIView):
 
 
 class CustomObtainAuthToken(ObtainAuthToken):
-    # Пользовательский класс для получения токена с информацией о пользователе
     def post(self, request, *args, **kwargs):
         response = super().post(request, *args, **kwargs)
         token = Token.objects.get(key=response.data['token'])

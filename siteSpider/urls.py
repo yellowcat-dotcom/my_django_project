@@ -1,6 +1,5 @@
 from django.urls import path, include
 from drf_yasg import openapi
-
 from .views import *
 from rest_framework import routers
 from django.urls import re_path
@@ -24,7 +23,6 @@ schema_view = get_schema_view(
 )
 
 urlpatterns = [
-    #path('', views.post_list, name='post_list'),
     # маршруты для Rest Framework
     path('api/configuration/', ConfigurationAPIView.as_view(), name='configuration_api'),
     path('api/', include(router.urls)),

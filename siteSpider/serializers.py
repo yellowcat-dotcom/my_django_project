@@ -51,6 +51,7 @@ class ReservationSerializer(serializers.ModelSerializer):
         queryset=MeetingRoom.objects.all(),
         required=False
     )
+
     participants = serializers.PrimaryKeyRelatedField(
         queryset=Employee.objects.all(),
         many=True,
@@ -76,12 +77,9 @@ class ReservationSerializer(serializers.ModelSerializer):
         fields = ['id', 'meeting_room', 'reserved_by', 'participants', 'start_time', 'end_time']
 
 
-class ReservationCreateSerializer(serializers.ModelSerializer):
-    participants = serializers.PrimaryKeyRelatedField(
-        queryset=Employee.objects.all(),
-        many=True,
-        required=False
-    )
+
+class ReservationForUserSerializer(serializers.ModelSerializer):
+    participants = EmployeeSerializer(many=True)
     reserved_by = serializers.PrimaryKeyRelatedField(
         queryset=Employee.objects.all(),
         default=serializers.CurrentUserDefault()
