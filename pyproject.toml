@@ -1,0 +1,20 @@
+[tool.poetry]
+name = "poetry add django"
+version = "0.1.0"
+description = ""
+authors = ["yellowcatdotcom <valentinagoncarenko975@gmail.com>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.10"
+django = "^4.2.3"
+djangorestframework = "^3.14.0"
+django-filter = "^23.2"
+django-solo = "^2.1.0"
+pillow = "^10.0.0"
+drf-yasg = "^1.21.7"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
